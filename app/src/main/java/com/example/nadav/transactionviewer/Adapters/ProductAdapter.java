@@ -22,13 +22,15 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductA
     private List<Product> mProducts;
 
     private final ProductAdapterOnClickHandler mClickHandler;
+    private Context mContext;
 
     public interface ProductAdapterOnClickHandler {
         void onClick(String productName);
     }
 
-    public ProductAdapter(ProductAdapterOnClickHandler clickHandler) {
+    public ProductAdapter(Context context,ProductAdapterOnClickHandler clickHandler) {
         mClickHandler = clickHandler;
+        mContext = context;
     }
 
     public class ProductAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -45,7 +47,9 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductA
 
         @Override
         public void onClick(View v) {
-            mClickHandler.onClick(mProductTextView.getText().toString());
+            int adapterPosition = getAdapterPosition();
+            String productName = mProducts.get(adapterPosition).name;
+            mClickHandler.onClick(productName);
         }
     }
 
@@ -62,18 +66,20 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductA
 
     @Override
     public void onBindViewHolder(ProductAdapterViewHolder productAdapterViewHolder, int position) {
-        String weatherForThisDay = mProducts.[position];
-        productAdapterViewHolder.mProductTextView.setText(weatherForThisDay);
+        String productName = mProducts.get(position).name;
+        int transactions = mProducts.get(position).transactions.size();
+        productAdapterViewHolder.mProductTextView.setText(productName);
+        productAdapterViewHolder.mTransactionsTextView.setText(transactions + mContext.getString(R.string.transactions_amount));
     }
 
     @Override
     public int getItemCount() {
-        if (null == mWeatherData) return 0;
-        return mWeatherData.length;
+        if (null == mProducts) return 0;
+        return mProducts.size();
     }
 
-    public void setWeatherData(String[] weatherData) {
-        mWeatherData = weatherData;
+    public void setProductData(List<Product> products) {
+        mProducts = products;
         notifyDataSetChanged();
     }
 }
