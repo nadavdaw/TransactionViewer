@@ -55,11 +55,11 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
     @Override
     public void onBindViewHolder(TransactionAdapterViewHolder TransactionAdapterViewHolder, int position) {
         String amountName = mTransactions.get(position).amount;
-        String conversionName = mTransactions.get(position).conversion;
+//        String conversionName = mTransactions.get(position).conversion;
         String ccurrencyName = mTransactions.get(position).currency;
 
         TransactionAdapterViewHolder.mAmountTextView.setText(ccurrencyName+" "+amountName);
-        TransactionAdapterViewHolder.mConversionTextView.setText(conversionName);
+//        TransactionAdapterViewHolder.mConversionTextView.setText(conversionName);
     }
 
     @Override

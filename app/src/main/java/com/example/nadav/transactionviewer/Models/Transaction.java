@@ -14,8 +14,16 @@ public class Transaction {
     @SerializedName("currency")
     @Expose
     public String currency;
-    @SerializedName("conversion")
+    @SerializedName("sku")
     @Expose
-    public String conversion;
+    public String sku;
 
+    public Transaction() {
+    }
+
+    public Transaction(String amount, String currency, String sku){
+        this.amount = amount;
+        this.currency = currency;
+        this.sku = sku;
+    }
 }

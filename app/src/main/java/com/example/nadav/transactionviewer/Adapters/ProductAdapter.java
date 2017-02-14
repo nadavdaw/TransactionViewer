@@ -7,9 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.nadav.transactionviewer.Models.Product;
+import com.example.nadav.transactionviewer.Models.Transaction;
 import com.example.nadav.transactionviewer.R;
 
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -19,7 +20,8 @@ import java.util.List;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductAdapterViewHolder> {
 
-    private List<Product> mProducts;
+    HashMap<String,List<Transaction>> mProducts = new HashMap<>();
+    private String[] mKeys;
 
     private final ProductAdapterOnClickHandler mClickHandler;
     private Context mContext;
@@ -41,14 +43,13 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductA
             super(view);
             mProductTextView = (TextView) view.findViewById(R.id.tv_product_name);
             mTransactionsTextView = (TextView) view.findViewById(R.id.tv_product_transactions);
-
             view.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
             int adapterPosition = getAdapterPosition();
-            String productName = mProducts.get(adapterPosition).name;
+            String productName = mKeys[adapterPosition];
             mClickHandler.onClick(productName);
         }
     }
@@ -66,20 +67,21 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductA
 
     @Override
     public void onBindViewHolder(ProductAdapterViewHolder productAdapterViewHolder, int position) {
-        String productName = mProducts.get(position).name;
-        int transactions = mProducts.get(position).transactions.size();
+        String productName = mKeys[position];
+        int transactions = mProducts.get(productName).size();
         productAdapterViewHolder.mProductTextView.setText(productName);
-        productAdapterViewHolder.mTransactionsTextView.setText(transactions + mContext.getString(R.string.transactions_amount));
+        productAdapterViewHolder.mTransactionsTextView.setText(transactions + " " + mContext.getString(R.string.transactions_amount));
     }
 
     @Override
     public int getItemCount() {
-        if (null == mProducts) return 0;
-        return mProducts.size();
+        if (null == mKeys) return 0;
+        return mKeys.length;
     }
 
-    public void setProductData(List<Product> products) {
+    public void setProductData(HashMap<String,List<Transaction>>  products) {
         mProducts = products;
+        mKeys = mProducts.keySet().toArray(new String[products.size()]);
         notifyDataSetChanged();
     }
 }
