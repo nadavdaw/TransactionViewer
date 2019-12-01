@@ -37,6 +37,7 @@ public class ProductsActivity extends AppCompatActivity implements ProductAdapte
         mRecyclerView.setAdapter(mProductAdapter);
         mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_loading_indicator);
 
+        //try this
         loadData();
     }
 
